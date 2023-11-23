@@ -6,6 +6,8 @@ import 'package:learning_bloc_app/widgets/custom_button.dart';
 import 'package:learning_bloc_app/widgets/custom_image.dart';
 import 'package:learning_bloc_app/widgets/custom_text.dart';
 
+import '../common/values/app_color.dart';
+
 class Welcome extends StatefulWidget {
   const Welcome({super.key});
   @override
@@ -16,7 +18,7 @@ class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.primaryBackground,
       body: Container(
         alignment: Alignment.center,
         width: 375.w,
