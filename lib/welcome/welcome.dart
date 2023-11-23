@@ -8,7 +8,6 @@ import 'package:learning_bloc_app/widgets/custom_text.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({super.key});
-
   @override
   State<Welcome> createState() => _WelcomeState();
 }
