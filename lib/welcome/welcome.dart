@@ -52,7 +52,7 @@ class _WelcomeState extends State<Welcome> {
                       WelcomePageItemView(
                         pageController: pageController,
                         index: 1,
-                        image: kManIMmg,
+                        image: kBoyImg,
                         title: "Connect With Everyone",
                         subTitle:
                             "Always keep in touch with tutor & friend. let's get connected",
@@ -60,7 +60,7 @@ class _WelcomeState extends State<Welcome> {
                       WelcomePageItemView(
                         pageController: pageController,
                         index: 2,
-                        image: kBoyImg,
+                        image: kManIMmg,
                         title: "Always Fascinated Learning",
                         subTitle:
                             "Anywhere, anytime. The time is at your direction so study whenever you want",
@@ -140,10 +140,11 @@ class WelcomePageItemView extends StatelessWidget {
             width: context.width,
             onPressed: onPressed ??
                 () {
-                  pageController.position;
+                  final position = pageController.page!.toInt();
                   // within 0-2 index
-                  if (index < 2) {
-                    pageController.animateToPage(index + 1,
+                  if (position < 2) {
+                    // if (position != position) {
+                    pageController.animateToPage(position + 1,
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.linear);
                   } else {}
