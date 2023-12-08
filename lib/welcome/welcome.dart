@@ -19,6 +19,7 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+  final pageController = PageController();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -33,39 +34,53 @@ class _WelcomeState extends State<Welcome> {
               child: Stack(
                 children: [
                   PageView(
-                    onPageChanged: (index){
-                      context.read<WelcomeBloc>().add(WelcomeEvent(index: index));
+                    controller: pageController,
+                    physics: const BouncingScrollPhysics(),
+                    onPageChanged: (index) {
+                      state.page = index;
+                      context.read<WelcomeBloc>().add(WelcomeEvent());
                     },
-                    children: const [
+                    children: [
                       WelcomePageItemView(
+                        pageController: pageController,
+                        index: 0,
                         image: kReadingImg,
                         title: "First See Learning",
                         subTitle:
-                        "Forget about a for of paper all knowledge in one of learning",
+                            "Forget about a for of paper all knowledge in one of learning",
                       ),
                       WelcomePageItemView(
-                        image: kReadingImg,
+                        pageController: pageController,
+                        index: 1,
+                        image: kManIMmg,
                         title: "Connect With Everyone",
                         subTitle:
-                        "Always keep in touch with tutor & friend. let's get connected",
+                            "Always keep in touch with tutor & friend. let's get connected",
                       ),
                       WelcomePageItemView(
-                        image: kReadingImg,
+                        pageController: pageController,
+                        index: 2,
+                        image: kBoyImg,
                         title: "Always Fascinated Learning",
                         subTitle:
-                        "Anywhere, anytime. The time is at your direction so study whenever you want",
+                            "Anywhere, anytime. The time is at your direction so study whenever you want",
                         buttonText: "Get Started",
                       ),
                     ],
                   ),
                   Positioned(
-                    bottom: 50,
+                      bottom: 50,
                       left: 0,
                       right: 0,
                       child: DotsIndicator(
-                    dotsCount: 3,
-                    position: state.page,
-                  ))
+                        dotsCount: 3,
+                        position: state.page,
+                        decorator: DotsDecorator(
+                            size: const Size.square(8.0),
+                            activeSize: const Size(18.0, 8.0),
+                            activeShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      )),
                 ],
               ),
             );
@@ -77,18 +92,24 @@ class _WelcomeState extends State<Welcome> {
 }
 
 class WelcomePageItemView extends StatelessWidget {
-  const WelcomePageItemView({super.key,
+  const WelcomePageItemView({
+    super.key,
+    required this.index,
     required this.title,
     required this.subTitle,
     required this.image,
     this.buttonText,
-    this.onPressed});
+    required this.pageController,
+    this.onPressed,
+  });
 
+  final int index;
   final String title;
   final String subTitle;
   final String? buttonText;
   final String image;
-  final Function()? onPressed;
+  final PageController pageController;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +127,7 @@ class WelcomePageItemView extends StatelessWidget {
               textAlign: TextAlign.center,
               text: title,
               textStyle:
-              CustomTextStyle.normalTextStyle().copyWith(fontSize: 24)),
+                  CustomTextStyle.normalTextStyle().copyWith(fontSize: 24)),
           10.height,
           CustomText(
               textAlign: TextAlign.center,
@@ -117,7 +138,16 @@ class WelcomePageItemView extends StatelessWidget {
           CustomButton(
             text: buttonText ?? "Next",
             width: context.width,
-            onPressed: onPressed ?? () {},
+            onPressed: onPressed ??
+                () {
+                  pageController.position;
+                  // within 0-2 index
+                  if (index < 2) {
+                    pageController.animateToPage(index + 1,
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.linear);
+                  } else {}
+                },
           ),
         ],
       ),
