@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:learning_bloc_app/common/values/images.dart';
+import 'package:learning_bloc_app/home/view/home.dart';
 import 'package:learning_bloc_app/util/extension.dart';
 import 'package:learning_bloc_app/welcome/bloc/welcome_bloc.dart';
 import 'package:learning_bloc_app/widgets/custom_button.dart';
@@ -22,70 +23,67 @@ class _WelcomeState extends State<Welcome> {
   final pageController = PageController();
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => WelcomeBloc(),
-      child: Scaffold(
-        backgroundColor: AppColors.primaryBackground,
-        body: BlocBuilder<WelcomeBloc, WelcomeState>(
-          builder: (context, state) {
-            return Container(
-              alignment: Alignment.center,
-              width: 375.w,
-              child: Stack(
-                children: [
-                  PageView(
-                    controller: pageController,
-                    physics: const BouncingScrollPhysics(),
-                    onPageChanged: (index) {
-                      state.page = index;
-                      context.read<WelcomeBloc>().add(WelcomeEvent());
-                    },
-                    children: [
-                      WelcomePageItemView(
-                        pageController: pageController,
-                        index: 0,
-                        image: kReadingImg,
-                        title: "First See Learning",
-                        subTitle:
-                            "Forget about a for of paper all knowledge in one of learning",
-                      ),
-                      WelcomePageItemView(
-                        pageController: pageController,
-                        index: 1,
-                        image: kBoyImg,
-                        title: "Connect With Everyone",
-                        subTitle:
-                            "Always keep in touch with tutor & friend. let's get connected",
-                      ),
-                      WelcomePageItemView(
-                        pageController: pageController,
-                        index: 2,
-                        image: kManIMmg,
-                        title: "Always Fascinated Learning",
-                        subTitle:
-                            "Anywhere, anytime. The time is at your direction so study whenever you want",
-                        buttonText: "Get Started",
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                      bottom: 50,
-                      left: 0,
-                      right: 0,
-                      child: DotsIndicator(
-                        dotsCount: 3,
-                        position: state.page,
-                        decorator: DotsDecorator(
-                            size: const Size.square(8.0),
-                            activeSize: const Size(18.0, 8.0),
-                            activeShape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      )),
-                ],
-              ),
-            );
-          },
-        ),
+    return Scaffold(
+      backgroundColor: AppColors.primaryBackground,
+      body: BlocBuilder<WelcomeBloc, WelcomeState>(
+        builder: (context, state) {
+          return Container(
+            alignment: Alignment.center,
+            width: 375.w,
+            child: Stack(
+              children: [
+                PageView(
+                  controller: pageController,
+                  physics: const BouncingScrollPhysics(),
+                  onPageChanged: (index) {
+                    state.page = index;
+                    context.read<WelcomeBloc>().add(WelcomeEvent());
+                  },
+                  children: [
+                    WelcomePageItemView(
+                      pageController: pageController,
+                      image: kReadingImg,
+                      title: "First See Learning",
+                      subTitle:
+                          "Forget about a for of paper all knowledge in one of learning",
+                    ),
+                    WelcomePageItemView(
+                      pageController: pageController,
+                      image: kBoyImg,
+                      title: "Connect With Everyone",
+                      subTitle:
+                          "Always keep in touch with tutor & friend. let's get connected",
+                    ),
+                    WelcomePageItemView(
+                      pageController: pageController,
+                      image: kManIMmg,
+                      title: "Always Fascinated Learning",
+                      subTitle:
+                          "Anywhere, anytime. The time is at your direction so study whenever you want",
+                      buttonText: "Get Started",
+                      onPressed: () {
+                        context.pushAndRemove(const HomePage());
+                      },
+                    ),
+                  ],
+                ),
+                Positioned(
+                    bottom: 50,
+                    left: 0,
+                    right: 0,
+                    child: DotsIndicator(
+                      dotsCount: 3,
+                      position: state.page,
+                      decorator: DotsDecorator(
+                          size: const Size.square(8.0),
+                          activeSize: const Size(18.0, 8.0),
+                          activeShape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    )),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -94,7 +92,6 @@ class _WelcomeState extends State<Welcome> {
 class WelcomePageItemView extends StatelessWidget {
   const WelcomePageItemView({
     super.key,
-    required this.index,
     required this.title,
     required this.subTitle,
     required this.image,
@@ -103,7 +100,6 @@ class WelcomePageItemView extends StatelessWidget {
     this.onPressed,
   });
 
-  final int index;
   final String title;
   final String subTitle;
   final String? buttonText;
